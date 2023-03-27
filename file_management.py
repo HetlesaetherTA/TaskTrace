@@ -1,5 +1,6 @@
 from pyicloud import PyiCloudService
 from shutil import copyfileobj
+from importlib import reload
 from time import sleep
 import ping3
 import io
@@ -8,7 +9,10 @@ import sys
 
 ping3.EXCEPTIONS = True
 
-#TODO add log files insted of printing minor errors
+#TODO 
+
+#add log files insted of printing minor errors
+# error: checkReadWrite will sometimes not clean TaskTrace folder after running
 class initalize:
     def checkConnection():
         try:
@@ -20,6 +24,7 @@ class initalize:
             
             return ("Apple.com - OK", 0)
         except:
+            sys.stdout = sys.__stdout__
             return ("Fail to ping apple.com, check if you're connected to internet", 1)
 
     def checkSignIn():
@@ -45,6 +50,10 @@ class initalize:
                 return ("Filed to initialize directory - Send in an issue on github", 1)
         return ("Directory - OK", 0)
     def checkReadWrite():
+        # Might be an error library. It needs to be reloaded for new files/folders to be recognized.
+        from pyicloud import PyiCloudService
+        initalize.checkSignIn()
+
         f = open("test.txt", 'w')
         f.write("a")
         f.close()
@@ -52,9 +61,9 @@ class initalize:
         try:
             with open("test.txt", 'rb') as f:
                 api.drive['TaskTrace'].upload(f)
+                return ("Read/Write - OK", 0)
         except:
             return ("Failed to write to iCloud", 1)
-
         try:
             testfile = api.drive['TaskTrace']['test.txt']  
             with testfile.open(stream=True) as response:
@@ -64,7 +73,6 @@ class initalize:
                 raise Exception("error")
         except: 
             return ("Failed to read from iCloud", 1)
-
         try:
             api.drive['TaskTrace']['test.txt'].delete()
         except:

@@ -9,9 +9,13 @@ startup_functions = [initalize.checkConnection, initalize.checkSignIn, initalize
 startup_functions_return_value = ""
 
 for function in startup_functions:
-    startup_functions_return_value = function()
-    bg_color = "on_green"
-    if startup_functions_return_value[1] == 1:
-        OFFLINE_MODE = True
-        bg_color = "on_red"
-    print(colored(startup_functions_return_value[0], "white", bg_color))
+    if OFFLINE_MODE == False: 
+        startup_functions_return_value = function()
+        bg_color = "on_green"
+        if startup_functions_return_value[1] == 1:
+            OFFLINE_MODE = True
+            bg_color = "on_red"
+        print(colored(startup_functions_return_value[0], "white", bg_color))
+    else:
+        print(colored("ENTERING OFFLINE MODE", "white", bg_color))
+        break
