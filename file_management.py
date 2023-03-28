@@ -1,3 +1,4 @@
+from utility import Animations
 from pyicloud import PyiCloudService
 from shutil import copyfileobj
 from importlib import reload
@@ -15,19 +16,22 @@ ping3.EXCEPTIONS = True
 # error: checkReadWrite will sometimes not clean TaskTrace folder after running
 class initalize:
     def checkConnection():
+        Animations.start(Animations.spinner, "Checking Connection ")
         try:
             # ping3 will print text not return it. Disabling print to output is not visable to user.
             text_trap = io.StringIO()
             sys.stdout = text_trap
             ping3.verbose_ping("www.apple.com")
             sys.stdout = sys.__stdout__
-            
+            Animations.kill() 
             return ("Apple.com - OK", 0)
         except:
             sys.stdout = sys.__stdout__
+            Animations.kill()
             return ("Fail to ping apple.com, check if you're connected to internet", 1)
 
     def checkSignIn():
+        Animations.start(Animations.spinner, "Signing In ")
         try:
             username = "hetlesaetherspam@gmail.com"
             pw = open("password.txt", "r")
@@ -39,15 +43,22 @@ class initalize:
 
             api.params['clientID'] = api.client_id
             api.drive.params["clientId"] = api.client_id
+            Animations.kill()
             return ("Sign In - OK", 0)
         except:
+            Animations.kill()
             return ("Failed to sign into your iCloud account, check if you're using valid credentials", 1)
     
     def checkDirectory(): 
+        Animations.start(Animations.spinner, "Checking Directory ")
         if "TaskTrace" not in api.drive.dir():
+            Animations.kill()
+            Animations.start(Animations.spinner, "Creating Directory ")
             response = api.drive.mkdir('TaskTrace')
             if response['folders'][0]['status'] != "OK":
+                Animations.kill()
                 return ("Filed to initialize directory - Send in an issue on github", 1)
+            Animations.kill()
         return ("Directory - OK", 0)
     def checkReadWrite():
         # Might be an error library. It needs to be reloaded for new files/folders to be recognized.
@@ -61,9 +72,9 @@ class initalize:
         try:
             with open("test.txt", 'rb') as f:
                 api.drive['TaskTrace'].upload(f)
-                return ("Read/Write - OK", 0)
         except:
             return ("Failed to write to iCloud", 1)
+        
         try:
             testfile = api.drive['TaskTrace']['test.txt']  
             with testfile.open(stream=True) as response:
