@@ -1,4 +1,8 @@
+import sys
+sys.path.insert(1, "python")
+
 from file_management import initalize
+
 from colorama import init
 from termcolor import colored
 
@@ -19,3 +23,4 @@ for function in startup_functions:
     else:
         print(colored("ENTERING OFFLINE MODE", "white", bg_color))
         break
+

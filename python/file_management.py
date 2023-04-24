@@ -25,27 +25,28 @@ class initalize:
             sys.stdout = sys.__stdout__
             Animations.kill() 
             return ("Apple.com - OK", 0)
-        except:
+        except Exception as e:
             sys.stdout = sys.__stdout__
             Animations.kill()
+            print(e)
             return ("Fail to ping apple.com, check if you're connected to internet", 1)
 
-    def checkSignIn():
-        Animations.start(Animations.spinner, "Signing In ")
-        try:
+    def checkSignIn(): 
+        print(sys.path)
+        try: 
             username = "hetlesaetherspam@gmail.com"
-            pw = open("password.txt", "r")
-            password = pw.read()
-            pw.close()
-            
-            global api
-            api = PyiCloudService(username, password)
+            pw = open(sys.path[0], "r")
+            password = pw.read() 
+            pw.close() 
 
-            api.params['clientID'] = api.client_id
-            api.drive.params["clientId"] = api.client_id
-            Animations.kill()
-            return ("Sign In - OK", 0)
-        except:
+            global api 
+            api = PyiCloudService(username, password) 
+            api.params['clientID'] = api.client_id 
+            api.drive.params["clientId"] = api.client_id 
+            Animations.kill() 
+            return ("Sign In - OK", 0) 
+        except Exception as e: 
+            print(e)
             Animations.kill()
             return ("Failed to sign into your iCloud account, check if you're using valid credentials", 1)
     
@@ -71,20 +72,20 @@ class initalize:
         
         try:
             with open("test.txt", 'rb') as f:
-                api.drive['TaskTrace'].upload(f)
-        except:
-            return ("Failed to write to iCloud", 1)
-        
-        try:
-            testfile = api.drive['TaskTrace']['test.txt']  
-            with testfile.open(stream=True) as response:
-                with open("testreturn.txt", 'wb') as file_out:
-                    copyfileobj(response.raw, file_out)
-            if open("testreturn.txt", 'r').read() != 'a':
-                raise Exception("error")
+                api.drive['TaskTrace'].upload(f) 
         except: 
-            return ("Failed to read from iCloud", 1)
-        try:
+            return ("Failed to write to iCloud", 1) 
+
+        try: 
+            testfile = api.drive['TaskTrace']['test.txt']  
+            with testfile.open(stream=True) as response: 
+                with open("testreturn.txt", 'wb') as file_out: 
+                    copyfileobj(response.raw, file_out) 
+                    if open("testreturn.txt", 'r').read() != 'a':
+                        raise Exception("error") 
+        except: 
+            return ("Failed to read from iCloud", 1) 
+        try: 
             api.drive['TaskTrace']['test.txt'].delete()
         except:
             return ("Failed to delete from iCloud", 1)
@@ -98,5 +99,3 @@ class initalize:
         else:
             print("Minor Warning - unable to find and delete local test file")
         return ("Read/Write - OK", 0)
-
-
