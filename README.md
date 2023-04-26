@@ -9,4 +9,4 @@ Instalation:
 
 Dependencies:
 
-pyicloud, ping3, termcolor, colorama 
+pandas, pyicloud, ping3, termcolor, colorama 
