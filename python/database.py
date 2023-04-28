@@ -69,6 +69,4 @@ class Inventory:
         for index in range(len(df.columns)):
             if df["ID"].iloc[index] == id_number:
                 df = df.drop(index)
-        print(df)
-Inventory.delete("CJ1309")
-Inventory.save()
+        return (id_number, True)
