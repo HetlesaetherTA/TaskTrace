@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fmt"
+	"github.com/HetlesaetherTA/TaskTrace/codebase/inventory"
+  "github.com/HetlesaetherTA/TaskTrace/codebase/filesystem"
 )
-
 func main() {
-	fmt.Println("test")
+  test := Inventory.Promt_new()
+  Filesystem.CreateJson(test)
 }
