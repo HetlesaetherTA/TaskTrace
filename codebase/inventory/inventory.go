@@ -21,7 +21,7 @@ func Promt_new() interface{} {
   formattedTime := fmt.Sprintf("%d%02d%02d%d%d%d", currentTime.Year(), int(currentTime.Month()), currentTime.Day(), currentTime.Hour(), currentTime.Minute(), currentTime.Second())
    
   entry_buffer := Entry{
-    Path: "files/Inventory/Available/" + formattedTime + ".json",
+    Path: "files/Inventory/Available/" + formattedTime,
     Product_ID: formattedTime,
     Model: "",
     Ram: 0,
@@ -40,3 +40,4 @@ func Promt_new() interface{} {
   fmt.Scanln(&entry_buffer.Price)
   return entry_buffer
 }
+
