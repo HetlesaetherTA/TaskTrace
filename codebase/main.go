@@ -2,14 +2,18 @@ package main
 
 import (
 	// "github.com/HetlesaetherTA/TaskTrace/codebase/inventory"
+
 	"fmt"
 
-	"github.com/HetlesaetherTA/TaskTrace/codebase/filesystem"
+	Filesystem "github.com/HetlesaetherTA/TaskTrace/codebase/filesystem"
 )
-func main() {
-  // test := Inventory.Promt_new()
-  // Filesystem.CreateJson(test)
-  test := Filesystem.Delete("20230807145041")
-  fmt.Println(test)
-}
 
+func main() {
+	path, err := Filesystem.Search("20230814142344")
+
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	err = Filesystem.Delete(path)
+}
